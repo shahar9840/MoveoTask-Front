@@ -41,19 +41,17 @@ function Login({token,username,setUsername,password,setPassword,navigate}) {
         }}
       >
         <div style={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
-          <h2>Login</h2>
+         
         </div>
-        <Button variant="contained" size="small">
-          <Link
-            style={{ textDecoration: "none", color: "inherit" }}
-            href="/signup"
-          >
+        <Button onClick={() => navigate("/signup")} variant="contained" size="small">
+          
             Signup
-          </Link>
+         
         </Button>
       </div>
 
       <div className="login">
+      <h2>Login</h2>
         <TextField
           onChange={(e) => setUsername(e.target.value)}
           id="filled-basic"

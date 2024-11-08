@@ -8,8 +8,10 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [checkPassword, setCheckPassword] = React.useState("");
@@ -50,8 +52,16 @@ function Signup() {
 
   return (
     <div>
-      <h2>Signup</h2>
+        <div 
+        style={{
+            textAlign: "right",
+          }}>
+      
+      <Button onClick={() => navigate("/login")} variant="contained" size="small">Login</Button>
+
+        </div>
       <div className="login">
+      <h2 >Signup</h2>
         <TextField fullWidth id="filled-basic" label="Name" variant="filled" onChange={(e) => setName(e.target.value)} />
         <br></br>
         <TextField
