@@ -1,13 +1,27 @@
-import { Button, Link } from "@mui/material";
+import { Button } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AdminSearch from "../Components/AdminSearch";
 import Player from "../Components/Player";
+import Result from "../Components/Result";
+import { io } from "socket.io-client";
 
-function Home({ token }) {
+
+function Home({ token , setToken}) {
   const navigate = useNavigate();
+  const [value, setValue] = React.useState(null);
+  const [chosenSong, setChosenSong] = React.useState(null);
   const [admin, setAdmin] = React.useState(false);
+  const socket = io("http://localhost:50000");
+
+
+
+
+  React.useEffect(() => {
+      socket.emit("user_connected", chosenSong)
+      
+  },[chosenSong])
   React.useEffect(() => {
     if (token) {
       setAdmin(isAdmin());
@@ -22,7 +36,7 @@ function Home({ token }) {
         },
       })
       .then((response) => {
-        console.log("is admin?", response.data.is_admin);
+
         setAdmin(response.data.is_admin);
         return response.data.is_admin;
       });
@@ -35,26 +49,65 @@ function Home({ token }) {
     navigate("/login");
   };
 
+  const handleSearch = () => {
+
+    setChosenSong(value);
+  };
+  const handelPlayer = () => {
+      socket.emit("user_connected", {"chosenSong": chosenSong,"check":"check"})
+  }
+
+  const handleBack = () => {
+    setChosenSong(null);
+  };
   return (
     <div>
       <div
         style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection:"row-reverse",
           textAlign: "right",
-          
+          padding: "10px",
+          '@media (maxWidth: 600px)': {
+            textAlign: "center",
+            padding: "5px",
+          },
         }}
       >
-        
-        <Button variant="contained" size="small" onClick={handleLogout}>
-          logout
+        <Button
+          variant="contained"
+          size="small"
+          onClick={handleLogout} 
+        >
+          Logout
         </Button>
+        {chosenSong?<Button variant="contained" size="small" onClick={handleBack}>Quit</Button>:<></>}
+        
       </div>
+
       {!admin ? (
         <div>
-          <Player />
+          <Player chosenSong={chosenSong} token={token} />
         </div>
+      ) : chosenSong ? (
+        <Result admin={admin} chosenSong={chosenSong} />
       ) : (
-        <div>
-          <AdminSearch />
+        <div
+          style={{
+            padding: "20px",
+            '@media (maxWidth: 600px)': {
+              padding: "10px",
+            },
+          }}
+        >
+          <AdminSearch
+            socket={socket}
+            token={token}
+            handleSearch={handleSearch}
+            setValue={setValue}
+            value={value}
+          />
         </div>
       )}
     </div>
