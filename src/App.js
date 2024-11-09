@@ -17,13 +17,22 @@ function App() {
   const token = localStorage.getItem("access_token");
   const isLoggedIn = localStorage.getItem('is_logged_in');
   const refreshToken = localStorage.getItem("refresh_token");
-
+  const socket = io(`${config.apiUrl}`);
   const [start,setStart]=React.useState(false);  
   const navigate = useNavigate();
 
 
 
+  React.useEffect(() => {
+    if (start === true) {
+      socket.on("user_connected", (data) => {
+        socket.emit("user_connected", {"check":"check"})
   
+      })
+      
+    }
+
+   }, [start]);
 
   React.useEffect(() => {
     if (token) {
@@ -89,7 +98,7 @@ function App() {
 
       
       <Routes>
-        <Route path="/" element={<Home token={token} checkToken={checkToken}/>} />
+        <Route path="/" element={<Home token={token} socket={socket} checkToken={checkToken}/>} />
         <Route path="/login" element={<Login token={token} username={username} setUsername={setUsername} password={password} setPassword={setPassword} navigate={navigate}/>} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/result" element={<Result />} />

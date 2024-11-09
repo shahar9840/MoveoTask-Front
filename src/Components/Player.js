@@ -5,9 +5,7 @@ import { io } from "socket.io-client";
 import config from "../Config";
 
 function Player({ token }) {
-    const socket = io(config.apiUrl , {
-        transports: ['websocket', 'polling'], // Specify transports for compatibility
-      });;
+  const socket = io(`${config.apiUrl}`);
   const [scrolling, setScrolling] = React.useState(false);
   const scrollAnimationFrame = React.useRef(null);
   const [dots, setDots] = React.useState("");
@@ -24,7 +22,7 @@ function Player({ token }) {
     React.useEffect(() => {
         
             axios
-            .get(`${config.apiUrl}/is_singer`, {
+            .get(`${config.apiUrl}is_singer`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
