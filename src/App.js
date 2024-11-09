@@ -9,6 +9,7 @@ import axios from 'axios';
 import Result from './Components/Result';
 import { io } from 'socket.io-client';
 import { Button } from '@mui/material';
+import config from './Config';
 
 function App() {
   const [username, setUsername] = React.useState("");
@@ -16,7 +17,7 @@ function App() {
   const token = localStorage.getItem("access_token");
   const isLoggedIn = localStorage.getItem('is_logged_in');
   const refreshToken = localStorage.getItem("refresh_token");
-  const socket = io("http://localhost:50000");
+  const socket = io(`${config.apiUrl}`);
   const [start,setStart]=React.useState(false);  
   const navigate = useNavigate();
 

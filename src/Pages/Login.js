@@ -2,12 +2,13 @@ import { Button, Link, TextField } from "@mui/material";
 import React from "react";
 import "../App.css";
 import axios from "axios";
+import config from "../Config";
 
 function Login({token,username,setUsername,password,setPassword,navigate}) {
 
   const login = () => {
     console.log("username", username, "password", password);
-    axios.post("http://localhost:50000/login", {   
+    axios.post(`${config.apiUrl}/login`, {   
       username,
       password
         

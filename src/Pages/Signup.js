@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import config from "../Config";
 
 function Signup() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function Signup() {
       return;
     } else {
       axios
-        .post("http://localhost:50000/create_user", {
+        .post(`${config.apiUrl}/create_user`, {
           username,
           password,
           name,

@@ -4,6 +4,7 @@ import React from "react";
 import axios from "axios";
 import Result from "./Result";
 import { useNavigate } from "react-router-dom";
+import config from "../Config";
 
 
 
@@ -21,7 +22,7 @@ function AdminSearch({ token ,handleSearch,setValue,value}) {
 
 
   React.useEffect(() => {
-    axios.get("http://localhost:50000/get_songs", {
+    axios.get(`${config.apiUrl}/get_songs`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }

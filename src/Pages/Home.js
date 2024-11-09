@@ -6,6 +6,7 @@ import AdminSearch from "../Components/AdminSearch";
 import Player from "../Components/Player";
 import Result from "../Components/Result";
 import { io } from "socket.io-client";
+import config from "../Config";
 
 
 function Home({ token , setToken}) {
@@ -13,7 +14,7 @@ function Home({ token , setToken}) {
   const [value, setValue] = React.useState(null);
   const [chosenSong, setChosenSong] = React.useState(null);
   const [admin, setAdmin] = React.useState(false);
-  const socket = io("http://localhost:50000");
+  const socket = io(config.apiUrl);
 
 
 
@@ -30,7 +31,7 @@ function Home({ token , setToken}) {
 
   const isAdmin = () => {
     axios
-      .get("http://localhost:50000/is_admin", {
+      .get(`${config.apiUrl}/is_admin`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
