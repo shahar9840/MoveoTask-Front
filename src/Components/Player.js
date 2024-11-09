@@ -25,7 +25,7 @@ function Player({ token }) {
     React.useEffect(() => {
         
             axios
-            .get(`${config.apiUrl}is_singer`, {
+            .get(`${config.apiUrl}/is_singer`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
