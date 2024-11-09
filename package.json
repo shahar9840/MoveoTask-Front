@@ -21,11 +21,11 @@
     "webpack-dev-server": "^5.1.0"
   },
   "scripts": {
-  "start": "react-scripts start",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject",
-  "build": "react-scripts build"
-},
+    "start": "react-scripts start",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build": "react-scripts build"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
