@@ -1,5 +1,0 @@
-services:
-  - type: web
-    name: frontend-moveo-task
-    env: static
-    dockerfilePath: ./Dockerfile
