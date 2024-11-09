@@ -18,8 +18,9 @@ function App() {
   const isLoggedIn = localStorage.getItem('is_logged_in');
   const refreshToken = localStorage.getItem("refresh_token");
   const socket = io(`${config.apiUrl}`, {
-    transports: ['websocket'],  
-    reconnectionAttempts: 5     
+    transports: ['websocket', 'polling'],
+    reconnectionAttempts: 5 ,
+    autoConnect: true    
   });
   const [start,setStart]=React.useState(false);  
   const navigate = useNavigate();
