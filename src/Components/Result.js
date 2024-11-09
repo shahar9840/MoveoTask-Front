@@ -47,7 +47,7 @@ function Result({ token, chosenSong, admin }) {
   return (
     <div style={{ padding: "10px", maxWidth: "100%", margin: "auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div>Result</div>
+
         <div>
           <Button
             onClick={handleScroll}

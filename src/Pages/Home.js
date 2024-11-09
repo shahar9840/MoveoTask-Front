@@ -102,7 +102,7 @@ function Home({ token , setToken}) {
           }}
         >
           <AdminSearch
-            socket={socket}
+
             token={token}
             handleSearch={handleSearch}
             setValue={setValue}
