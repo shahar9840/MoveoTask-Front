@@ -14,7 +14,9 @@ function Home({ token , setToken}) {
   const [value, setValue] = React.useState(null);
   const [chosenSong, setChosenSong] = React.useState(null);
   const [admin, setAdmin] = React.useState(false);
-  const socket = io(config.apiUrl);
+  const socket = io(config.apiUrl , {
+    transports: ['websocket', 'polling'], // Specify transports for compatibility
+  });;
 
 
 
@@ -22,7 +24,7 @@ function Home({ token , setToken}) {
   React.useEffect(() => {
       socket.emit("user_connected", chosenSong)
       
-  },[chosenSong])
+  },[chosenSong,socket])
   React.useEffect(() => {
     if (token) {
       setAdmin(isAdmin());

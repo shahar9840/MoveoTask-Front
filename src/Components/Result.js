@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import React from "react";
-import { io } from "socket.io-client";
+
 import config from "../Config";
 
-const socket = io(`${config.apiUrl}`);
+
 
 function Result({ token, chosenSong, admin }) {
   const [scrolling, setScrolling] = React.useState(false);
