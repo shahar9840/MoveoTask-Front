@@ -15,9 +15,9 @@ function Home({ token , setToken}) {
   const [chosenSong, setChosenSong] = React.useState(null);
   const [admin, setAdmin] = React.useState(false);
   const socket = io(config.apiUrl , {
-    transports: ['websocket', 'polling'], // Specify transports for compatibility
-  });;
-
+    transports: ['websocket'],  
+    reconnectionAttempts: 5     
+  });
 
 
 

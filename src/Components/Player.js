@@ -5,7 +5,10 @@ import { io } from "socket.io-client";
 import config from "../Config";
 
 function Player({ token }) {
-  const socket = io(`${config.apiUrl}`);
+  const socket = io(`${config.apiUrl}`, {
+    transports: ['websocket'],  
+    reconnectionAttempts: 5     
+  });
   const [scrolling, setScrolling] = React.useState(false);
   const scrollAnimationFrame = React.useRef(null);
   const [dots, setDots] = React.useState("");
