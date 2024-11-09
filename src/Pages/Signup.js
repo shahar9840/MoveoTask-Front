@@ -33,7 +33,7 @@ function Signup() {
     setInstrumentSelected(event.target.value);
   };
   const signup = () => {
-    console.log("username", username,"password", password,"checkPassword", checkPassword,'name', name, 'instrument',instrumentSelected);
+   
     if (password !== checkPassword) {
       alert("Passwords do not match");
       return;
@@ -45,9 +45,7 @@ function Signup() {
           name,
           instrument:instrumentSelected,
         })
-        .finally((response) => {
-          console.log(response);
-        });
+        
     }
   };
 

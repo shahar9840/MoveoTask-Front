@@ -28,11 +28,11 @@ function AdminSearch({ token ,handleSearch,setValue,value}) {
       }
     }).then((response) => {
 
-      console.log('hsfshsf',response.data);
+
       if (Array.isArray(response.data)) {
         setSongs(response.data);
       } else {
-        console.error("Response data is not an array:", response.data);
+
 
         setSongs([]);;
       }

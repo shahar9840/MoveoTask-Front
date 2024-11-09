@@ -75,7 +75,7 @@ function App() {
           Authorization: `Bearer ${token}`,
         },
       }).then((response) => {
-        console.log("Response:", response);
+
         if (response.data.user === username) {
           return true
         }else{

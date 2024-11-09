@@ -23,17 +23,22 @@ function Player({ token }) {
     
     // check if user is singer
     React.useEffect(() => {
-        
-            axios
-            .get(`${config.apiUrl}/is_singer`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                console.log("is singer?:", response);
-                setIsSingerValue(response.data);
-            });
+        if (token){
+          
+          axios
+          .get(`${config.apiUrl}/is_singer`, {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          })
+          .then((response) => {
+
+              setIsSingerValue(response.data);
+          });
+
+
+
+        }
         
         
     }, [token]);
@@ -68,7 +73,7 @@ function Player({ token }) {
       setPresentSong(data);
     });
     return () => {
-      socket.off("server_response");
+        
     };
   }, [socket]);
 

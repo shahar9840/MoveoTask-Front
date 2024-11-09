@@ -7,13 +7,13 @@ import config from "../Config";
 function Login({token,username,setUsername,password,setPassword,navigate}) {
 
   const login = () => {
-    console.log("username", username, "password", password);
+
     axios.post(`${config.apiUrl}/login`, {   
       username,
       password
         
     }).then((response) => {
-      console.log('response:',response);
+
       localStorage.setItem("is_logged_in", true);
       localStorage.setItem("access_token", response.data.access_token);
       localStorage.setItem("refresh_token", response.data.refresh_token);
