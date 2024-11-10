@@ -1,8 +1,8 @@
 // src/config.js
-const config2 = {
+const config = {
     apiUrl: 'https://moveotask-back-2.onrender.com'
   };
-const config = {
+const config2 = {
     apiUrl: 'http://localhost:5001'
   };
   
