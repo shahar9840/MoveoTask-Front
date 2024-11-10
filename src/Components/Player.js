@@ -15,11 +15,13 @@ function Player({ token }) {
   const [dots, setDots] = React.useState("");
   const [presentSong, setPresentSong] = React.useState(null);
   const [isSingerValue,setIsSingerValue] = React.useState(false);;
-  const socketRef = React.useRef(null);
   const containsHebrew = (text) => {
-      return /[\u0590-\u05FF]/.test(text);
-    };
-    const isTitleHebrew = presentSong?.title && containsHebrew(presentSong.title);
+    return /[\u0590-\u05FF]/.test(text);
+  };
+  const isTitleHebrew = presentSong?.title && containsHebrew(presentSong.title);
+  
+  const socketRef = React.useRef(null);
+    
     
     
     // check if user is singer
