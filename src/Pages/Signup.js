@@ -45,6 +45,14 @@ function Signup() {
           name,
           instrument:instrumentSelected,
         })
+        .then((response) => {
+          <h1>{response.message}</h1>
+          console.log(response.message);
+          navigate("/login");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
         
     }
   };

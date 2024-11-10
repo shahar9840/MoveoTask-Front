@@ -61,6 +61,7 @@ function App() {
           Authorization: `Bearer ${token}`,
         },
       })
+      
       .then((response) => {
         console.log("Response:", response.data.user);
         if (response.data.user === username) {
@@ -71,6 +72,7 @@ function App() {
         console.error("Error checking token:", error);
         if (error.response && error.response.status === 401) {
           localStorage.setItem("is_logged_in", false);
+          localStorage.removeItem("refresh_token");
           localStorage.removeItem("access_token");
           navigate("/login");
         }
@@ -90,6 +92,7 @@ function App() {
       })
       .then((response) => {
         if (response.data.user === username) {
+          localStorage.setItem("is_logged_in", true)
           return true;
         } else {
           localStorage.setItem("is_logged_in", false);
@@ -100,7 +103,12 @@ function App() {
       })
       .catch((error) => {
         console.error("Error checking token:", error);
-        navigate("/login");
+        if (error.response && error.response.status === 401) {
+          localStorage.setItem("is_logged_in", false);
+          localStorage.removeItem("refresh_token");
+          localStorage.removeItem("access_token");
+          navigate("/login");
+        }
       });
     }
   };

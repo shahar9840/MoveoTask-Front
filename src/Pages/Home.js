@@ -59,24 +59,20 @@ function Home({ token, setToken }) {
         console.error("Error checking admin status:", error);
       });
   };
-
+  // Handle logout
   const handleLogout = () => {
     localStorage.setItem("is_logged_in", false);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     navigate("/login");
   };
-
+// Handle search
   const handleSearch = () => {
     setChosenSong(value);
   };
 
-  const handlePlayer = () => {
-    if (socket) {
-      socket.emit("user_connected", { chosenSong, check: "check" });
-    }
-  };
-
+  
+// Handle back
   const handleBack = () => {
     setChosenSong(null);
   };

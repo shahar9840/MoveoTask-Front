@@ -15,12 +15,7 @@ function AdminSearch({ token ,handleSearch,setValue,value}) {
   const [songs, setSongs] = React.useState([]);
 
 
-
-
-
-
-
-
+// Fetch songs
   React.useEffect(() => {
     axios.get(`${config.apiUrl}/get_songs`, {
       headers: {

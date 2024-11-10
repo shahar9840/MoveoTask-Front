@@ -14,7 +14,7 @@ function Result({ token, chosenSong, admin }) {
   }, [chosenSong]);
 
   const smoothScrollToEnd = () => {
-    // Scroll a few pixels down
+// scroll to the bottom
     window.scrollBy({ top: 5, behavior: "smooth" });
 
     // Continue scrolling if not at the bottom of the page
@@ -38,11 +38,11 @@ function Result({ token, chosenSong, admin }) {
       smoothScrollToEnd();
     }
   };
-  
+  // Check if the text contains Hebrew
   const containsHebrew = (text) => {
     return /[\u0590-\u05FF]/.test(text);
   };
-
+// Check if the title contains Hebrew
   const isTitleHebrew = chosenSong?.title && containsHebrew(chosenSong.title);
 
   return (
@@ -101,8 +101,8 @@ function Result({ token, chosenSong, admin }) {
                       padding: "5px",
                       textAlign: "center",
                       fontSize: "6vw",
-                      whiteSpace: "nowrap", // Ensure words stay together
-                      maxWidth: "90%", // Prevent overflow by controlling max width
+                      whiteSpace: "nowrap", 
+                      maxWidth: "90%", 
                     }}
                   >
                     <div style={{ fontWeight: "bold" }}>{line.lyrics}</div>

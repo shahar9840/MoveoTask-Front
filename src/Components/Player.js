@@ -92,6 +92,7 @@ function Player({ token }) {
   return (
     <div>
       <div>
+        
         {presentSong && (
           <Button
             onClick={handleScroll}
@@ -108,6 +109,7 @@ function Player({ token }) {
           </Button>
         )}
       </div>
+      
       {presentSong ? (
         <div>
           <div
