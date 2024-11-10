@@ -20,24 +20,38 @@ function App() {
   const refreshToken = localStorage.getItem("refresh_token");
   const [start,setStart]=React.useState(false);  
   const navigate = useNavigate();
-  const newSocket = io(`${config.apiUrl}`, {
-    transports: ['websocket', 'polling'],
-    reconnectionAttempts: 5 ,
-    autoConnect: true    
-  });
 
+  const socketRef = React.useRef(null);
+
+  React.useEffect(() => {
+    socketRef.current = io(`${config.apiUrl}`, {
+      transports: ['websocket', 'polling'],
+      reconnectionAttempts: 5,
+      autoConnect: true
+    });
+
+    // Optional: Add socket event listeners
+    socketRef.current.on("connect", () => {
+      console.log("Connected to socket");
+    });
+
+    // Cleanup the socket connection on unmount
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, []);
 
 
   React.useEffect(() => {
-    if (start === true) {
-      socket.on("user_connected", (data) => {
-        socket.emit("user_connected", {"check":"check"})
-  
-      })
-      
+    if (start && socketRef.current) {
+      socketRef.current.on("user_connected", (data) => {
+        socketRef.current.emit("user_connected", { check: "check" });
+      });
     }
+  }, [start]);
 
-   }, [start,socket]);
 
   React.useEffect(() => {
     if (token) {
