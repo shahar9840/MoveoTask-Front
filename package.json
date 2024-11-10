@@ -21,11 +21,11 @@
     "webpack-dev-server": "^5.1.0"
   },
   "scripts": {
-  "start": "react-scripts start",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject",
-  "build": "react-scripts build"
-},
+    "start": "react-scripts start",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build": "react-scripts build"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -48,6 +48,7 @@
     "node": ">=18.x"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "eslint-plugin-react-hooks": "^5.0.0"
   }
 }
