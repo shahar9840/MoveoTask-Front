@@ -14,6 +14,8 @@ function Home({ token , setToken}) {
   const [value, setValue] = React.useState(null);
   const [chosenSong, setChosenSong] = React.useState(null);
   const [admin, setAdmin] = React.useState(false);
+ 
+//  socket connection
   const socket = io(config.apiUrl , {
     transports: ['websocket'],  
     reconnectionAttempts: 5     
@@ -37,7 +39,7 @@ function Home({ token , setToken}) {
       }
   },[chosenSong,socketRef]);
 
-
+// check if user is admin
   React.useEffect(() => {
     if (token) {
       setAdmin(isAdmin());
@@ -57,14 +59,14 @@ function Home({ token , setToken}) {
         return response.data.is_admin;
       });
   };
-
+// handle logout
   const handleLogout = () => {
     localStorage.setItem("is_logged_in", false);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     navigate("/login");
   };
-
+// handle search
   const handleSearch = () => {
 
     setChosenSong(value);
@@ -72,7 +74,7 @@ function Home({ token , setToken}) {
   const handelPlayer = () => {
       socket.emit("user_connected", {"chosenSong": chosenSong,"check":"check"})
   }
-
+// handle back
   const handleBack = () => {
     setChosenSong(null);
   };

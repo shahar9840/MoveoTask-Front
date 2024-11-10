@@ -12,7 +12,7 @@ function Result({ token, chosenSong, admin }) {
   React.useEffect(() => {
     console.log("chosen song", chosenSong);
   }, [chosenSong]);
-
+// smooth scroll
   const smoothScrollToEnd = () => {
 // scroll to the bottom
     window.scrollBy({ top: 5, behavior: "smooth" });

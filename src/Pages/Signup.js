@@ -32,6 +32,8 @@ function Signup() {
 
     setInstrumentSelected(event.target.value);
   };
+
+  // Signup
   const signup = () => {
    
     if (password !== checkPassword) {

@@ -22,7 +22,7 @@ function App() {
   const navigate = useNavigate();
 
   const socketRef = React.useRef(null);
-
+// socket connection
   React.useEffect(() => {
     socketRef.current = io(`${config.apiUrl}`, {
       transports: ['websocket', 'polling'],
@@ -43,7 +43,7 @@ function App() {
     };
   }, []);
 
-
+// check if user is connected
   React.useEffect(() => {
     if (start && socketRef.current) {
       socketRef.current.on("user_connected", (data) => {
@@ -52,7 +52,7 @@ function App() {
     }
   }, [start]);
 
-
+// check if user is logged in
   React.useEffect(() => {
     if (token) {
       axios.get(`${config.apiUrl}/check_token`, {
@@ -83,7 +83,7 @@ function App() {
     }
   }, [token]);
     
-      
+// check token 
   const checkToken = () => {
     if (token && token !== "" && token !== undefined && token !== null) {
       axios.get(`${config.apiUrl}/check_token`, {
