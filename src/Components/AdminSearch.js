@@ -2,7 +2,7 @@ import { Autocomplete, Button, createFilterOptions, TextField } from "@mui/mater
 import React from "react";
 
 import axios from "axios";
-import Result from "./Result";
+
 import { useNavigate } from "react-router-dom";
 import config from "../Config";
 

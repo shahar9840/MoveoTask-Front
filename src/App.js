@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import React from 'react';
 import './App.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ import Signup from './Pages/Signup';
 import axios from 'axios';
 import Result from './Components/Result';
 import { io } from 'socket.io-client';
-import { Button } from '@mui/material';
+
 import config from './Config';
 
 function App() {
