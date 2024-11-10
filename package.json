@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^5.9.0",
+    "@craco/craco": "^7.1.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/lab": "^6.0.0-beta.14",
@@ -21,11 +21,11 @@
     "webpack-dev-server": "^5.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+  "start": "react-scripts start",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject",
+  "build": "react-scripts build"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -45,8 +45,8 @@
     ]
   },
   "engines": {
-  "node": ">=18.x"
-},
+    "node": ">=18.x"
+  },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
