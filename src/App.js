@@ -13,18 +13,29 @@ import config from './Config';
 
 function App() {
   const [username, setUsername] = React.useState("");
+  const [socket, setSocket] = React.useState(null);
   const [password, setPassword] = React.useState("");
   const token = localStorage.getItem("access_token");
   const isLoggedIn = localStorage.getItem('is_logged_in');
   const refreshToken = localStorage.getItem("refresh_token");
-  const socket = io(`${config.apiUrl}`, {
-    transports: ['websocket', 'polling'],
-    reconnectionAttempts: 5 ,
-    autoConnect: true    
-  });
   const [start,setStart]=React.useState(false);  
   const navigate = useNavigate();
+  
+  React.useEffect(() => {
+    const newSocket = io(`${config.apiUrl}`, {
+      transports: ['websocket', 'polling'],
+      reconnectionAttempts: 5,
+      autoConnect: true
+    });
+    setSocket(newSocket);
 
+    // Cleanup function to disconnect the socket on unmount
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect();
+      }
+    };
+  }, [config.apiUrl]);
 
 
   React.useEffect(() => {
@@ -36,7 +47,7 @@ function App() {
       
     }
 
-   }, [start]);
+   }, [start,socket]);
 
   React.useEffect(() => {
     if (token) {
