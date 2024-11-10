@@ -5,67 +5,53 @@ import { io } from "socket.io-client";
 import config from "../Config";
 
 function Player({ token }) {
+  const socket = io(`${config.apiUrl}`, {
+    transports: ['websocket', 'polling'],
+    reconnectionAttempts: 5,
+    autoConnect: true     
+  });
   const [scrolling, setScrolling] = React.useState(false);
   const scrollAnimationFrame = React.useRef(null);
   const [dots, setDots] = React.useState("");
   const [presentSong, setPresentSong] = React.useState(null);
-  const [isSingerValue, setIsSingerValue] = React.useState(false);
-  const [socket, setSocket] = React.useState(null);
-
-  // Initialize socket connection once
-  React.useEffect(() => {
-    const socketInstance = io(`${config.apiUrl}`, {
-      transports: ['websocket'],
-      reconnectionAttempts: 5,
-      autoConnect: true,
-    });
-
-    setSocket(socketInstance); // Save the socket instance in state
-
-    // Clean up the socket connection on unmount
-    return () => {
-      socketInstance.disconnect();
+  const [isSingerValue,setIsSingerValue] = React.useState(false);;
+  const socketRef = React.useRef(null);
+  const containsHebrew = (text) => {
+      return /[\u0590-\u05FF]/.test(text);
     };
-  }, []);
+    const isTitleHebrew = presentSong?.title && containsHebrew(presentSong.title);
+    
+    
+    // check if user is singer
+    React.useEffect(() => {
+        if (token){
+          
+          axios
+          .get(`${config.apiUrl}/is_singer`, {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          })
+          .then((response) => {
 
-  // Listen for server responses
-  React.useEffect(() => {
-    if (socket) {
-      socket.on("server_response", (data) => {
-        setPresentSong(data);
-      });
+              setIsSingerValue(response.data);
+          });
 
-      // Clean up the event listener when component unmounts or dependencies change
-      return () => {
-        socket.off("server_response");
-      };
-    }
-  }, [socket]);
 
-  // Check if the user is a singer
-  React.useEffect(() => {
-    if (token) {
-      axios
-        .get(`${config.apiUrl}/is_singer`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setIsSingerValue(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching singer status:", error);
-        });
-    }
-  }, [token]);
 
-  // Smooth scrolling logic
+        }
+        
+        
+    }, [token]);
   const smoothScrollToEnd = () => {
+    // Scroll a few pixels down
     window.scrollBy({ top: 5, behavior: "smooth" });
+
+    // Continue scrolling if not at the bottom of the page
     if (window.innerHeight + window.scrollY < document.body.offsetHeight) {
       scrollAnimationFrame.current = requestAnimationFrame(smoothScrollToEnd);
     } else {
+      // Stop scrolling automatically if the end is reached
       setScrolling(false);
       cancelAnimationFrame(scrollAnimationFrame.current);
     }
@@ -73,18 +59,44 @@ function Player({ token }) {
 
   const handleScroll = () => {
     if (scrolling) {
+      // Stop scrolling
       cancelAnimationFrame(scrollAnimationFrame.current);
       setScrolling(false);
     } else {
+      // Start scrolling
       setScrolling(true);
       smoothScrollToEnd();
     }
   };
+//   get data from server socket
+  // Establish socket connection once
+  React.useEffect(() => {
+    socketRef.current = io(`${config.apiUrl}`, {
+      transports: ["websocket", "polling"],
+      reconnectionAttempts: 5,
+      autoConnect: true,
+    });
 
-  // Dots animation for waiting state
+    socketRef.current.on("server_response", (data) => {
+      setPresentSong(data);
+    });
+
+    // Clean up on component unmount
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, []);
+
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setDots((prevDots) => (prevDots.length > 2 ? "" : prevDots + "."));
+      setDots((prevDots) => {
+        if (prevDots.length > 2) {
+          return "";
+        }
+        return prevDots + ".";
+      });
     }, 600);
     return () => clearInterval(interval);
   }, []);
@@ -92,25 +104,25 @@ function Player({ token }) {
   return (
     <div>
       <div>
+        {presentSong !== null && presentSong !== "" && presentSong !== undefined ?<Button
+          onClick={handleScroll}
+          sx={{
+            position: "fixed",
+            bottom: { xs: "5px", md: "10px" },
+            right: { xs: "5px", md: "10px" },
+            padding: { xs: "8px 16px", md: "10px 20px" },
+            fontSize: { xs: "14px", md: "16px" },
+            zIndex: 1000,
+          }}
+        >
+          {scrolling ? "Stop Scrolling" : "Scroll to End"}
+        </Button>:<></> 
+             }
         
-        {presentSong && (
-          <Button
-            onClick={handleScroll}
-            sx={{
-              position: "fixed",
-              bottom: { xs: "5px", md: "10px" },
-              right: { xs: "5px", md: "10px" },
-              padding: { xs: "8px 16px", md: "10px 20px" },
-              fontSize: { xs: "14px", md: "16px" },
-              zIndex: 1000,
-            }}
-          >
-            {scrolling ? "Stop Scrolling" : "Scroll to End"}
-          </Button>
-        )}
       </div>
-      
-      {presentSong ? (
+      {presentSong !== null &&
+      presentSong !== "" &&
+      presentSong !== undefined ? (
         <div>
           <div
             style={{
@@ -118,7 +130,7 @@ function Player({ token }) {
               flexDirection: "column",
               alignItems: "center",
               color: "Menu",
-              direction: presentSong.title && /[\u0590-\u05FF]/.test(presentSong.title) ? "rtl" : "ltr",
+              direction: isTitleHebrew ? "rtl" : "ltr",
               wordWrap: "break-word",
             }}
           >
@@ -145,23 +157,23 @@ function Player({ token }) {
                     padding: "5px",
                     textAlign: "center",
                     fontSize: "6vw",
-                    whiteSpace: "nowrap",
-                    maxWidth: "90%",
+                    whiteSpace: "nowrap", // Ensure words stay together
+                    maxWidth: "90%", // Prevent overflow by controlling max width
                   }}
                 >
                   <div style={{ fontWeight: "bold" }}>{line.lyrics}</div>
-                  {!isSingerValue && line.chords && (
+                  {!isSingerValue && line.chords ? ( // Only show chords if not a singer
                     <div style={{ fontSize: "6vw", color: "red" }}>
                       ({line.chords})
                     </div>
-                  )}
+                  ) : null}
                 </div>
               ))}
             </div>
           ))}
         </div>
       ) : (
-        <h1>Waiting for the next song{dots}</h1>
+        <h1>Waitng for the next song{dots}</h1>
       )}
     </div>
   );
