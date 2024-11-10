@@ -69,13 +69,14 @@ function Player({ token }) {
 //   get data from server socket
   // Establish socket connection once
   React.useEffect(() => {
+    if (!token) return
     socketRef.current = io(`${config.apiUrl}`, {
       transports: ["websocket", "polling"],
       reconnectionAttempts: 5,
       autoConnect: true,
     });
 
-    socketRef.current.on("server_response", (data) => {
+   socketRef.current.on("server_response", (data) => {
       setPresentSong(data);
     });
 

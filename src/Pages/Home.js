@@ -18,13 +18,26 @@ function Home({ token , setToken}) {
     transports: ['websocket'],  
     reconnectionAttempts: 5     
   });
+  const socketRef = React.useRef(null);
 
 
 
   React.useEffect(() => {
-      socket.emit("user_connected", chosenSong)
-      
-  },[chosenSong,socket])
+    if (!token) return
+    socketRef.current = io(`${config.apiUrl}`, {
+      transports: ["websocket", "polling"],
+      reconnectionAttempts: 5,
+      autoConnect: true,
+    });
+    socketRef.current.emit("user_connected", chosenSong)
+      return () => {
+        if (socketRef.current) {
+          socketRef.current.disconnect();
+        }
+      }
+  },[chosenSong,socketRef]);
+
+
   React.useEffect(() => {
     if (token) {
       setAdmin(isAdmin());
