@@ -83,7 +83,7 @@ function Player({ token }) {
     // Clean up on component unmount
     return () => {
       if (socketRef.current) {
-        socketRef.current.disconnect();
+        // socketRef.current.disconnect();
       }
     };
   }, []);
